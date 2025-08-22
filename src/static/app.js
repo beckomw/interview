@@ -71,7 +71,7 @@ async function setup() {
 				}
 				const products = await response.json();// we have to make sure the data is parsed and stays in JSON 
 				console.log(products); // display the correct information 
-
+					products.sort((a,b)=> a.price - b.price); // will sort numbers in ascending order 
 					renderProducts(products);
 			// using catch and a log statment to verify what the error is 
 

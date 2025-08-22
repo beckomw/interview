@@ -1,16 +1,49 @@
 window.addEventListener("DOMContentLoaded", setup);
 
+
 async function setup() {
 	// START HERE
 	// API Endpoint: GET /products
 	// Returns: Array of product objects with id, title, price (in cents), and array of images
-	// TODO: Fetch products from the API
+	// TODO: Fetch products from the API 
 	// TODO: Render the products to the page in a responsive grid
 	// TODO: Sort the products by price (low to high by default)
 	// TODO: Implement search functionality
 	// BONUS: Use the refactored sorting function for dynamic sort order
 	// BONUS: Add error handling for the fetch request
+
+			// Fetching products from the API (since Products is being stored in the API I have to manually them from the endpoint and create a variable for them)
+		 	try {
+				const response = await fetch('/products')
+				if (!response.ok) {
+					throw new Error(`Error status: ${response.status}`);
+				}
+				const products = await response.json();// we have to make sure the data is parsed and stays in JSON 
+				console.log(products) = await response.json(); // I use log statements to verify what data I'm using 
+
+
+			
+			// using catch and a log statment to verify what the error is 
+
+			} catch (error) {
+				console.log("No products available", error); 
+			}
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
 /**
  * Sorts an array of products by price in ascending or descending order.
  *

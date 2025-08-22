@@ -3,10 +3,14 @@
 window.addEventListener("DOMContentLoaded", setup);
 
 
+
+
+
+
 	// rendering the product cards and proper price labeling 
 
 			function renderProducts(products) {
-				const productGrid = document.getElementById('product-grid'); 
+				const productGrid = document.getElementById('product-grid'); // I grabbed the div, cleared it and iterated and assigned a card for each product 
 				productGrid.innerHTML = ''; 
 				products.forEach(element => {
 					const card = createProductCard(element); 
@@ -46,6 +50,7 @@ window.addEventListener("DOMContentLoaded", setup);
 
 
 async function setup() {
+	 
 	// START HERE
 	// API Endpoint: GET /products
 	// Returns: Array of product objects with id, title, price (in cents), and array of images
@@ -56,7 +61,7 @@ async function setup() {
 	// BONUS: Use the refactored sorting function for dynamic sort order
 	// BONUS: Add error handling for the fetch request
 			// There was no "dev" branch available when I forked the Repository.  - Wayne 
-
+			
 
 			// Fetching products from the API (since Products is being stored in the API I have to manually them from the endpoint and create a variable for them)
 		 	try {
@@ -77,7 +82,6 @@ async function setup() {
 		
 
 			
-
 			
 		}
 

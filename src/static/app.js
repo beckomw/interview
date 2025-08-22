@@ -3,6 +3,29 @@
 window.addEventListener("DOMContentLoaded", setup);
 
 
+    // Case sensitive functionality for our search bar 
+	function setupSearch(products){
+		const searchBar = document.getElementById('search-bar'); 
+
+		searchBar.addEventListener('input', (event) => {
+			const searchTerm = event.target.value.toLowerCase(); 
+
+			const filteredProducts = products.filter(product => {
+				const productTitle = product.title.toLowerCase(); 
+				return productTitle.includes(searchTerm); 
+			});
+
+			renderProducts(filteredProducts); 
+		});
+	}
+
+	async function fetchProducts() {
+		const response = await fetch('/products'); 
+		if(!response.ok) {
+			throw new Error(`API request failes with status ${response.status}`); 
+		}
+		return await response.json(); // we must always make sure our data stays the same
+	}
 
 
 
@@ -64,23 +87,29 @@ async function setup() {
 			
 
 			// Fetching products from the API (since Products is being stored in the API I have to manually them from the endpoint and create a variable for them)
-		 	try {
-				const response = await fetch('/products')
-				if (!response.ok) {
-					throw new Error(`Error status: ${response.status}`);
-				}
-				const products = await response.json();// we have to make sure the data is parsed and stays in JSON 
-				console.log(products); // display the correct information 
-					products.sort((a,b)=> a.price - b.price); // will sort numbers in ascending order 
-					renderProducts(products);
-			// using catch and a log statment to verify what the error is 
 
-			} catch (error) {
-				console.log("No products available", error); 
-			}
+			try {
+				const allProducts = await fetchProducts(); // Fetch all products 
+				
+				allProducts.sort((a,b) => a.price - b.price); // sorting the initial list by price (low to high) 
+
+				setupSearch(allProducts); // calling the search listener and giving it back a sorted list  
+
+				renderProducts(allProducts); // Render the initial sorted list of products 
 
 		
 
+				
+				// we should still catch and display an error if there is one
+			} catch (error) {
+				console.error("Could not complete application setup:", error); 
+				const productGrid = document.getElementById('product-grid'); 
+				productGrid.innerHTML = '<p> Error loading products. Please try again. </p>'; 
+
+			}
+
+
+		
 			
 			
 		}

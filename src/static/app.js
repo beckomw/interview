@@ -1,4 +1,43 @@
+
+
 window.addEventListener("DOMContentLoaded", setup);
+
+
+	// rendering the product cards and proper price labeling 
+
+			function renderProducts(products) {
+				const productGrid = document.getElementById('product-grid'); 
+				productGrid.innerHTML = ''; 
+				products.forEach(element => {
+					const card = createProductCard(element); 
+					productGrid.appendChild(card); 
+				});
+			}
+
+
+			function createProductCard(product) {
+				const card = document.createElement('div'); 
+				card.className = 'product-card'; // this is so we can find and style the card later 
+
+				const title = document.createElement('h3');
+				title.textContent = product.title; 
+
+				const price = document.createElement('p'); 
+				//  the price is not in the correct format we need to make sure we display it correctly 
+				price.textContent = `$${(product.price / 100).toFixed(2)}`; 
+				const img = document.createElement('img'); 
+				img.src = product.images[0].src; // 
+				img.alt = product.title; 
+
+				card.append(img, title, price); // Adding all the data we pulled and appending it to the div
+				 
+				return card; 
+
+			}
+
+
+
+
 
 
 
@@ -26,39 +65,39 @@ async function setup() {
 					throw new Error(`Error status: ${response.status}`);
 				}
 				const products = await response.json();// we have to make sure the data is parsed and stays in JSON 
-				console.log(products) = await response.json(); // I use log statements to verify what data I'm using 
+				console.log(products); // display the correct information 
 
-
-			
+					renderProducts(products);
 			// using catch and a log statment to verify what the error is 
 
 			} catch (error) {
 				console.log("No products available", error); 
 			}
 
+		
 
-}
+			
 
-			// rendering the product cards and proper price labeling 
-			function productCard(product) {
-				const card = document.createElement('div'); 
-				card.className = 'product-card'; // this is so we can find and style the card later 
+			
+		}
 
-				const title = document.createElement('h3');
-				title.textContent = product.title; 
 
-				const price = document.createElement('p'); 
-				//  the price is not in the correct format we need to make sure we display it correctly 
-				price.textContent = `$${(product.price / 100).toFixed(2)}`; 
-				const img = document.createElement('img'); 
-				img.src = product.images[0]; 
-				img.alt = product.title; 
 
-				card.append(img, title, price); // Adding all the data we pulled and appending it to the div
-				 
-				return card; 
+			
 
-			}
+		
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

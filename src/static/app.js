@@ -1,6 +1,11 @@
 window.addEventListener("DOMContentLoaded", setup);
 
 
+
+
+
+
+
 async function setup() {
 	// START HERE
 	// API Endpoint: GET /products
@@ -11,6 +16,8 @@ async function setup() {
 	// TODO: Implement search functionality
 	// BONUS: Use the refactored sorting function for dynamic sort order
 	// BONUS: Add error handling for the fetch request
+			// There was no "dev" branch available when I forked the Repository.  - Wayne 
+
 
 			// Fetching products from the API (since Products is being stored in the API I have to manually them from the endpoint and create a variable for them)
 		 	try {
@@ -30,15 +37,33 @@ async function setup() {
 			}
 
 
-
-
-
-
-
-
-
-
 }
+
+			// rendering the product cards and proper price labeling 
+			function productCard(product) {
+				const card = document.createElement('div'); 
+				card.className = 'product-card'; // this is so we can find and style the card later 
+
+				const title = document.createElement('h3');
+				title.textContent = product.title; 
+
+				const price = document.createElement('p'); 
+				//  the price is not in the correct format we need to make sure we display it correctly 
+				price.textContent = `$${(product.price / 100).toFixed(2)}`; 
+				const img = document.createElement('img'); 
+				img.src = product.images[0]; 
+				img.alt = product.title; 
+
+				card.append(img, title, price); // Adding all the data we pulled and appending it to the div
+				 
+				return card; 
+
+			}
+
+
+
+
+
 
 
 

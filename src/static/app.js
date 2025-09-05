@@ -1,145 +1,101 @@
-
-
 window.addEventListener("DOMContentLoaded", setup);
 
+// Case sensitive functionality for our search bar
+function setupSearch(products) {
+	const searchBar = document.getElementById("search-bar");
 
-    // Case sensitive functionality for our search bar 
-	function setupSearch(products){
-		const searchBar = document.getElementById('search-bar'); 
+	searchBar.addEventListener("input", (event) => {
+		const searchTerm = event.target.value.toLowerCase();
 
-		searchBar.addEventListener('input', (event) => {
-			const searchTerm = event.target.value.toLowerCase(); 
-
-			const filteredProducts = products.filter(product => {
-				const productTitle = product.title.toLowerCase(); 
-				return productTitle.includes(searchTerm); 
-			});
-
-			renderProducts(filteredProducts); 
+		const filteredProducts = products.filter((product) => {
+			const productTitle = product.title.toLowerCase();
+			return productTitle.includes(searchTerm);
 		});
+
+		renderProducts(filteredProducts);
+	});
+}
+
+async function fetchProducts() {
+	const response = await fetch("/products");
+	if (!response.ok) {
+		throw new Error(`API request failes with status ${response.status}`);
 	}
+	return await response.json(); // we must always make sure our data stays the same
+}
 
-	async function fetchProducts() {
-		const response = await fetch('/products'); 
-		if(!response.ok) {
-			throw new Error(`API request failes with status ${response.status}`); 
-		}
-		return await response.json(); // we must always make sure our data stays the same
-	}
+// rendering the product cards and proper price labeling
 
+function renderProducts(products) {
+	const productGrid = document.getElementById("product-grid"); // I grabbed the div, cleared it and iterated and assigned a card for each product
+	productGrid.innerHTML = "";
+	products.forEach((element) => {
+		const card = createProductCard(element);
+		productGrid.appendChild(card);
+	});
+}
 
+function createProductCard(product) {
+	const card = document.createElement("div");
+	card.className = "product-card"; // this is so we can find and style the card later
 
+	const title = document.createElement("h3");
+	title.textContent = product.title;
 
-	// rendering the product cards and proper price labeling 
+	const price = document.createElement("p");
+	//  the price is not in the correct format we need to make sure we display it correctly
+	price.textContent = `$${(product.price / 100).toFixed(2)}`;
+	const img = document.createElement("img");
+	img.src = product.images[0].src; //
+	img.alt = product.title;
 
-			function renderProducts(products) {
-				const productGrid = document.getElementById('product-grid'); // I grabbed the div, cleared it and iterated and assigned a card for each product 
-				productGrid.innerHTML = ''; 
-				products.forEach(element => {
-					const card = createProductCard(element); 
-					productGrid.appendChild(card); 
-				});
-			}
+	const button = document.createElement("button");
+	button.className = "add-to-cart";
+	button.textContent = "Add To Cart";
+	button.addEventListener("click", async () => {
+		const res = await fetch("/api/cart/add", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ [product.id]: 1 }),
+		});
+	});
 
+	card.append(img, title, price, button); // Adding all the data we pulled and appending it to the div
 
-			function createProductCard(product) {
-				const card = document.createElement('div'); 
-				card.className = 'product-card'; // this is so we can find and style the card later 
-
-				const title = document.createElement('h3');
-				title.textContent = product.title; 
-
-				const price = document.createElement('p'); 
-				//  the price is not in the correct format we need to make sure we display it correctly 
-				price.textContent = `$${(product.price / 100).toFixed(2)}`; 
-				const img = document.createElement('img'); 
-				img.src = product.images[0].src; // 
-				img.alt = product.title; 
-
-				card.append(img, title, price); // Adding all the data we pulled and appending it to the div
-				 
-				return card; 
-
-			}
-
-
-
-
-
-
-
-
-
-
+	return card;
+}
 
 async function setup() {
-	 
 	// START HERE
-	// API Endpoint: GET /products
 	// Returns: Array of product objects with id, title, price (in cents), and array of images
-	// TODO: Fetch products from the API 
+	// TODO: Fetch products from the API
 	// TODO: Render the products to the page in a responsive grid
 	// TODO: Sort the products by price (low to high by default)
 	// TODO: Implement search functionality
 	// BONUS: Use the refactored sorting function for dynamic sort order
 	// BONUS: Add error handling for the fetch request
-			// There was no "dev" branch available when I forked the Repository.  - Wayne 
-			
+	// There was no "dev" branch available when I forked the Repository.  - Wayne
 
-			// Fetching products from the API (since Products is being stored in the API I have to manually them from the endpoint and create a variable for them)
+	// Fetching products from the API (since Products is being stored in the API I have to manually them from the endpoint and create a variable for them)
 
-			try {
-				const allProducts = await fetchProducts(); // Fetch all products 
-				
-				allProducts.sort((a,b) => a.price - b.price); // sorting the initial list by price (low to high) 
+	try {
+		const allProducts = await fetchProducts(); // Fetch all products
 
-				setupSearch(allProducts); // calling the search listener and giving it back a sorted list  
+		allProducts.sort((a, b) => a.price - b.price); // sorting the initial list by price (low to high)
 
-				renderProducts(allProducts); // Render the initial sorted list of products 
+		setupSearch(allProducts); // calling the search listener and giving it back a sorted list
 
-		
+		renderProducts(allProducts); // Render the initial sorted list of products
 
-				
-				// we should still catch and display an error if there is one
-			} catch (error) {
-				console.error("Could not complete application setup:", error); 
-				const productGrid = document.getElementById('product-grid'); 
-				productGrid.innerHTML = '<p> Error loading products. Please try again. </p>'; 
-
-			}
-
-
-		
-			
-			
-		}
-
-
-
-			
-
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		// we should still catch and display an error if there is one
+	} catch (error) {
+		console.error("Could not complete application setup:", error);
+		const productGrid = document.getElementById("product-grid");
+		productGrid.innerHTML = "<p> Error loading products. Please try again. </p>";
+	}
+}
 
 /**
  * Sorts an array of products by price in ascending or descending order.

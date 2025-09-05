@@ -1,0 +1,92 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="./index.css" />
+  <link href="https://fonts.googleapis.com/css?family=Mina" rel="stylesheet">
+  <script src="./cart.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+  <title>Cart | SavedBy Mock Store</title>
+</head>
+
+<body>
+  <header>
+    <a href="/" style="text-decoration: none; color: initial">
+      <h2>SavedBy Store</h2>
+    </a>
+  </header>
+
+
+
+
+
+
+  <main id="cart--page">
+    <h1 id="cart--title">Cart</h1>
+
+    <section id="cart-items">
+      <!-- CART ITEMS HERE -->
+    </section>
+
+    <hr />
+
+    <div id="cart--total-price">
+      [TOTAL CART PRICE]
+    </div>
+
+  </main>
+
+
+
+
+
+
+  <!-- TEMPLATES -->
+
+  <!-- EMPTY CART TEMPLATE -->
+  <template id="template--empty-cart">
+    <h2>Your cart is empty</h2>
+    <a href="/">Continue shopping</a>
+  </template>
+
+  <!-- CART ITEM TEMPLATE -->
+  <template id="template--cart-item">
+    <div class="cart-item">
+      <image class="cart-item--img" />
+
+
+      <div class="cart-item--title-area">
+        <h2 name="title">[ITEM TITLE]</h2>
+
+
+        <button name="remove" class="remove-btn">REMOVE</button>
+
+      </div>
+
+      <!-- /* ADD THE BUTTON */ -->
+
+
+
+      <div class="cart-item--content">
+
+        <div name="quantity">
+          <select class="cart-item--quantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+
+        <div name="line-price">
+          [ITEM TOTAL LINE PRICE]
+        </div>
+        <!-- <a><button id="add"></button></a>  -->
+      </div>
+    </div>
+  </template>
+
+</body>
+
+</html>

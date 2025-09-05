@@ -1,86 +1,203 @@
-# Welcome!
+# Interview Round 2
 
-Thanks for your interest in joining the SavedBy team! If you're reading this, you're on the right track!
-This take-home project will assess the skills we're looking for in our next dev hire.
-This is not timed, but aim for 3-4hrs. In other-words, don't go overboard!
+This is a live coding session that should take about 1-2 hrs.
+We'll be piggy-backing off of the project done during round 1.
+Take 5-10 mins to plan out-loud and prioritize features.
+Most of the HTML and CSS has been completed for you and is found in this repo.
+This part of the interview we will go through your planning and development process to implement the objectives below.
+Think aloud and we'll ask questions along the way. This is "open book", don't be discouraged to look up anything.
+Cart API docs are found below.
 
-In this project, we're going to make a simple product collection page for a mock e-commerce store.
-The boilerplate includes a prebuilt server (/src/server) to host your static files (/src/static).
-Below you can find everything you'll need to get started and an outline of the objectives.
-After completion, we will review your code and let you know about the next steps!
-Keep in mind this is the first half of the interview process.
-We will be holding a live interview session to add another feature to this project. Let's get started!
+### I'll be adding:
 
-## What skills are we looking for?
+- A pre-developed cart page with element templates. (/src/static/cart.html)
+- Additional classes to your CSS file. (/src/static/index.css)
+- A Cart API to the server.
+- 3 screenshots to use as a reference.
+- A boilerplate cart.js file. (/src/static/cart.js)
 
-- Proficiency in JavaScript, CSS and DOM manipulation
-- Git comprehension
-- Mockup-to-UI development
-- Clean, documented code
-- Ability to use vanilla languages without the use of 3rd-party modules.
-- Balance between Functionality and quality
-- Mobile-first development (i.e. responsiveness)
-- Resourcefulness
+### Objectives:
 
-## What You'll Build
+- [ ] Implement the "Add To Cart" feature on products. (Refer to /resources/Product-add-to-cart.png)
+- [ ] Cart icon navigates to /cart
+- [ ] Use the empty cart template
+- [ ] Fetch and render the cart
+- [ ] Use the product template
+- [ ] Change quantity feature
+- [ ] Calculate total line item price with quantity
+- [ ] Calculate cart total price
+- [ ] Updates to cart API rerenders the cart items
 
-- Complete the HTML structure in the existing index.html file
-- Add product grid, search bar, and responsive layout
-- Style everything in index.css
-- Implement functionality in app.js
-  
-## Design Reference
+# Cart API Docs
 
-- **Desktop mockup**: /resources/Product-desktop.png
-- **Mobile mockup**: /resources/Product-mobile.png
-- Match your UI as closely as possible to these mockups
+<details>
+<summary><b>Requesting the API</b></summary>
 
-## Prerequisites
+Host: `http://localhost:3000/api/cart`
 
-- NPM
-- NodeJS
-- VSCode
+Sample request
 
-## Starting
+```js
+// Example fetch for add to cart
+fetch("https://localhost:3000/api/cart/add", {
+	method: "POST",
+	headers: {
+		"Content-Type": "application/json",
+	},
+	body: JSON.stringify({
+		[12341234]: 1,
+	}),
+});
+```
 
-- Fork the repo (https://github.com/SavedBy/interview)
-- Move to the "dev" branch
-- Create a new branch called "feature/product-page". Use this branch for your commits.
-- Install the dependencies
-- Run `npm start` to start the mock server
-- View your work at localhost:3000
-- Build the complete UI within the existing HTML structure in /src/static/index.html
-- The HTML file contains the basic page structure - you'll need to add the product grid, search bar, and layout
+</details>
 
-## Key Notes and Instructions:
+<details>
+<summary>
+<b>
+<code>GET</code>
+<code>/</code>
+Fetch cart
+</b>
+</summary>
 
-- The API is located at the same host (http://localhost:3000/)
-- Make the product grid mobile responsive. 2 columns on mobile and 3 on desktop. Breakpoint at 430px.
-- Link font from https://fonts.googleapis.com/css?family=Mina
-- Retain all JavaScript logic in the app.js file
-- Retain all CSS in the index.css file
-- Display products sorted by price (low to high by default)
-- Overall browser compatibility
-- Match your UI as closely as the mockup as you can
-- Implement a search bar that filters products by title as the user types
-- Search should be case-insensitive and work in real-time
+#### Response
 
-- **Bonus Challenge:** Refactor the `messyFunction` in `src/static/app.js` to demonstrate code quality skills (can be integrated into your product page if desired)
+The current cart object.
 
-## API Reference
+```json
+// Example Response
+{
+	"items": [
+		{
+			"id": 8267098980637,
+			"image": {
+				"src": "https://cdn.shopify.com/s/files/1/0746/7876/3805/products/Main_d624f226-0a89-4fe1-b333-0d1548b43c06.jpg?v=1682125898"
+			},
+			"price": 35099,
+			"quantity": 1,
+			"title": "Oxygen Snowboard"
+		}
+	]
+}
+```
 
-- **Endpoint**: GET /products
-- **Response**: Array of product objects
-- **Product structure**:
-  - `id`: Unique identifier
-  - `title`: Product name
-  - `price`: Price in cents (e.g., 3199 = $31.99)
-  - `images`: Array with image URLs
+</details>
 
-## HELP!
+<details>
+<summary>
+<b>
+<code>POST</code>
+<code>/add</code>
+Add products to cart
+</b>
+</summary>
 
-If you get stuck, or our instructions are unclear, no worries! Shoot us an email at dev@savedby.io!
+#### Request
 
-## Finished?
+Object with key value pairs of the product ID and quantity to add.
 
-Just shoot us an email at dev@savedby.io with your name and link to your GitHub repo! Please make sure it is public. At this step, we will review your code and inform you if you've made it to the next step!
+```json
+// Example Request
+{
+	"8267098980637": 1,
+	"8267099111709": 2
+}
+```
+
+#### Response
+
+The updated cart object.
+
+```json
+// Example Response
+{
+	"items": [
+		{
+			"id": 8267098980637,
+			"image": {
+				"src": "https://cdn.shopify.com/s/files/1/0746/7876/3805/products/Main_d624f226-0a89-4fe1-b333-0d1548b43c06.jpg?v=1682125898"
+			},
+			"price": 35099,
+			"quantity": 1,
+			"title": "Oxygen Snowboard"
+		}
+	]
+}
+```
+
+</details>
+
+<details>
+<summary>
+<b>
+<code>POST</code>
+<code>/remove</code>
+Remove products from cart
+</b>
+</summary>
+
+#### Request
+
+Array of product IDs to remove.
+
+```json
+// Example Request
+["8267098980637", "8267099111709"]
+```
+
+#### Response
+
+The updated cart object.
+
+```json
+// Example Response
+{
+	"items": []
+}
+```
+
+</details>
+
+<details>
+<summary>
+<b>
+<code>POST</code>
+<code>/update</code>
+Update cart item quantity
+</b>
+</summary>
+
+#### Request
+
+Object with key value pairs of the product ID and new quantity.
+
+```json
+// Example Request
+{
+	"8267098980637": 3
+}
+```
+
+#### Response
+
+The current cart object.
+
+```json
+// Example Response
+{
+	"items": [
+		{
+			"id": 8267098980637,
+			"image": {
+				"src": "https://cdn.shopify.com/s/files/1/0746/7876/3805/products/Main_d624f226-0a89-4fe1-b333-0d1548b43c06.jpg?v=1682125898"
+			},
+			"price": 35099,
+			"quantity": 3,
+			"title": "Oxygen Snowboard"
+		}
+	]
+}
+```
+
+</details>
